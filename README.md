@@ -11,7 +11,7 @@ Simply create a symfony console application instance via zend-servicemanager.
 * [Zend Framework Service Manager component 3.3 or higher](https://github.com/zendframework/zend-servicemanager)
 
 ## Installation
-MonologConfig can be installed with composer. For information on how to get composer or how to use it, please refer to
+ConsoleConfigResolver can be installed with composer. For information on how to get composer or how to use it, please refer to
 [getcomposer.org](http://getcomposer.org).
 
 Installation via command line:
@@ -23,7 +23,7 @@ Installation via `composer.json` file:
 ```json
 {
     "require": {
-        "dwendrich/monolog-config": "*"
+        "dwendrich/console-config-resolver": "*"
     }
 }
 ```
@@ -39,7 +39,7 @@ return [
             // this will be resolved by the service-manager later
             MyConsoleCommand::class,
             
-            // instances have to extend \Symfony\Component\Console\Command\Command
+            // instances have to extend Symfony\Component\Console\Command\Command
             new OtherConsoleCommand(),
         ],
     ],
@@ -47,14 +47,14 @@ return [
     // in zend framework applications this section is called 'service_manager'
     'dependencies' => [
         'factories' => [
-            'Example\Console' => \ConsoleConfigResolver\Factory\ConfigResolverFactory::class,
+            'Example\Console' => ConsoleConfigResolver\Factory\ConfigResolverFactory::class,
         ],
     ],
 ];
 ```
 
 Under the key `commands` you can provide commands which will be added to your application. These have to either be a
-class name or an object instance extending `\Symfony\Component\Console\Command\Command`.
+class name or an object instance extending `Symfony\Component\Console\Command\Command`.
 
 Now in your code you can use the service manager to create the console application instance, e. g. in a file called
 `console.php` you can do it like this:
