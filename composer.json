@@ -2,6 +2,9 @@
     "name": "dwendrich/console-config-resolver",
     "description": "Simply create a symfony console application instance via zend-servicemanager.",
     "type": "library",
+    "keywords": [
+        "console", "symfony-console", "zend-servicemanager", "configuration"
+    ],
     "license": "MIT",
     "authors": [
         {
