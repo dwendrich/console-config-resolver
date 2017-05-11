@@ -1,0 +1,44 @@
+{
+    "name": "dwendrich/console-config-resolver",
+    "description": "Simply create a symfony console application instance via zend-servicemanager.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Wendrich",
+            "email": "daniel.wendrich@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "^3.2",
+        "zendframework/zend-servicemanager": "^3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.0",
+        "squizlabs/php_codesniffer": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ConsoleConfigResolver\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ConsoleConfigResolver\\Test\\": "test/"
+        }
+    },
+    "scripts": {
+        "check": [
+            "@cs-check",
+            "@test"
+        ],
+        "cover": [
+            "@cs-check",
+            "@test-coverage"
+        ],
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf",
+        "test": "phpunit",
+        "test-coverage": "phpunit --colors=never --coverage-text"
+    }
+}
