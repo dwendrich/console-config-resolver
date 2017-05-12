@@ -9,6 +9,12 @@ use Zend\ServiceManager\Exception\ServiceNotCreatedException;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
+/**
+ * Class ConfigResolverFactory
+ *
+ * @package ConsoleConfigResolver\Factory
+ * @author Daniel Wendrich <daniel.wendrich@gmail.com>
+ */
 class ConfigResolverFactory implements FactoryInterface
 {
     /**
