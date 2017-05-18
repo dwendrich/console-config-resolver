@@ -4,6 +4,7 @@ namespace ConsoleConfigResolver\Test\Factory;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use ConsoleConfigResolver\Factory\ConfigResolverFactory;
+use ConsoleConfigResolver\Test\Fixtures\Command as TestCommand;
 use Interop\Container\ContainerInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -108,7 +109,7 @@ class ConfigResolverFactoryTest extends TestCase
 
     /**
      * @expectedException \Zend\ServiceManager\Exception\ServiceNotCreatedException
-     * @expectedExceptionMessageRegExp =^Console commands provided by configuration must either be a class name or instance of.*=
+     * @expectedExceptionMessageRegExp =^An invalid command was registered. Expected an instance of.*=
      */
     public function testResolveCommandByObjectOfWrongTypeThrowsException()
     {
@@ -133,7 +134,38 @@ class ConfigResolverFactoryTest extends TestCase
         $instance = $factory->__invoke($container->reveal(), 'console');
     }
 
-    public function testResolveCommandByString()
+    public function testResolveCommandByClassName()
+    {
+        $config = [
+            'console' => [
+                'name'     => 'My console application',
+                'version'  => '1.0.0',
+                'commands' => [
+                    TestCommand::class,
+                ],
+            ],
+        ];
+
+        $container = $this->prophesize(ContainerInterface::class);
+
+        $container->has('config')->willReturn(true);
+        $container->get('config')->willReturn($config);
+
+        $container->has(TestCommand::class)->willReturn(false);
+
+        $factory = new ConfigResolverFactory();
+
+        /** @var Application $instance */
+        $instance = $factory->__invoke($container->reveal(), 'console');
+
+        $this->assertInstanceOf(Application::class, $instance);
+        $this->assertInstanceOf(
+            Command::class,
+            $instance->get('command')
+        );
+    }
+
+    public function testResolveCommandByServiceManager()
     {
         $config = [
             'console' => [
@@ -169,7 +201,7 @@ class ConfigResolverFactoryTest extends TestCase
 
     /**
      * @expectedException \Zend\ServiceManager\Exception\ServiceNotFoundException
-     * @expectedExceptionMessage Unable to resolve "Application\TestCommand".
+     * @expectedExceptionMessageRegExp =^An invalid command was registered; resolved to class.*=
      */
     public function testResolveUnknownCommandByStringThrowsException()
     {

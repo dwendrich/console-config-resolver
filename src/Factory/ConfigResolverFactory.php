@@ -62,24 +62,34 @@ class ConfigResolverFactory implements FactoryInterface
     private function resolveCommand($command, ContainerInterface $container)
     {
         if (is_string($command)) {
+            // first check, if di container knows how to instantiate the object
             if ($container->has($command)) {
                 $command = $container->get($command);
             } else {
-                throw new ServiceNotFoundException(sprintf(
-                    'Unable to resolve "%s".',
-                    $command
-                ));
+                if (!class_exists($command)) {
+                    throw new ServiceNotFoundException(
+                        sprintf(
+                            'An invalid command was registered; resolved to class "%s" ' .
+                            'which does not exist; please provide a valid class name ' .
+                            'resolving to an implementation of %s',
+                            $command,
+                            Command::class
+                        )
+                    );
+                }
+                $command = new $command();
             }
         }
 
         if (! $command instanceof Command) {
-            throw new ServiceNotCreatedException(sprintf(
-                'Console commands provided by configuration must either be a class name ' .
-                'or instance of "Symfony\Component\Console\Command\Command", but "%s" given.',
-                is_object($command)
-                    ? get_class($command)
-                    : gettype($command)
-            ));
+            throw new ServiceNotCreatedException(
+                sprintf(
+                    'An invalid command was registered. Expected an instance of ' .
+                    '(or string class name resolving to) "%s", but "%s" was received.',
+                    Command::class,
+                    (is_object($command) ? get_class($command) : gettype($command))
+                )
+            );
         }
 
         return $command;
