@@ -36,7 +36,7 @@ return [
         'name'     => 'My console application',
         'version'  => '1.0.0',
         'commands' => [
-            // this will be resolved by the service-manager later
+            // provide a class name or a service name configured in service manager
             MyConsoleCommand::class,
             
             // instances have to extend Symfony\Component\Console\Command\Command
