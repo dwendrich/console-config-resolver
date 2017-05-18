@@ -71,7 +71,7 @@ class ConfigResolverFactory implements FactoryInterface
                         sprintf(
                             'An invalid command was registered; resolved to class "%s" ' .
                             'which does not exist; please provide a valid class name ' .
-                            'resolving to an implementation of %s',
+                            'resolving to an implementation of "%s".',
                             $command,
                             Command::class
                         )
